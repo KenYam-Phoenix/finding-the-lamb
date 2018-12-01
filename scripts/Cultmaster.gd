@@ -3,63 +3,16 @@ extends Node
 # This file deals with all of the behind-the-scenes stuff regarding the cult
 # and the sacrifice that needs to be made.
 
-const WEAPON_MATERIAL = {
-	"STEEL": {},
-	"COPPER": {},
-	"GOLD": {},
-	"WOOD": {}
-}
-
-const WEAPON_TYPE = {
-	"DAGGER": {},
-	"SCYTHE": {}
-}
-
-const LOCATION_GROUND = {
-	"EARTH": {},
-	"WATER": {},
-	"STONE": {}
-}
-
-class Sacrifice:
-	var subject_id
-	var weapon_id
-	var location_id
-	var time
-	
-	func _init(_subject, _weapon, _location, _time):
-		subject_id = _subject
-		weapon_id = _weapon
-		location_id = _location
-		time = _time
-
-class Weapon:
-	var id
-	var owner_id
-
-class Location:
-	var id
-	var ground
-
 # I'm storing these in dicts because Godot copies values where Java would reference them -
 # in function arguments and the like - so it's better to instead deal with an object's ID,
 # under which they'll be stored in these dicts.
 var members
-var weapons = []
-var locations = []
-var sacrifice
+var lamb
 var sages
 var fake_sage
 
 func get_member_by_id(id):
 	return members[id]
-
-const SACRIFICE_TIME = {
-	"SUNRISE": {},
-	"NOON": {},
-	"SUNSET": {},
-	"MIDNIGHT": {}
-}
 
 func find_eligable_bachelor():
 	for next_candidate in members.values():
@@ -162,7 +115,7 @@ func setup_game():
 	var acceptable = false
 	while !acceptable:
 		try_populating_cult()
-		sacrifice = choose_necessary_sacrifice()
+		lamb = members.keys()[randi() % members.size()]
 		acceptable = true
 		for i in range (1, 3):
 			if get_member_count_for_generation(i) < 4:
@@ -172,7 +125,7 @@ func setup_game():
 		if get_latest_generation() > 3:
 			acceptable = false
 		# Make sure we have at least four hints
-		var hints = CultMember.get_hints(members[sacrifice.subject_id])
+		var hints = CultMember.get_hints(members[lamb])
 		if hints.size() < 4: acceptable = false
 		# Make sure we don't have any shared names
 		var names = []
@@ -181,18 +134,8 @@ func setup_game():
 				acceptable = false
 			else: names.append(CultMember.get_full_name(next_person))
 
-# Of all the items generated so far, randomly select the ones that will be needed
-func choose_necessary_sacrifice():
-	var subject = members.keys()[randi() % members.size()]
-	#var weapon = weapons.keys()[randi() % weapons.size()]
-	#var location = locations.keys()[randi() % locations.size()]
-	#var time = SACRIFICE_TIME.keys()[randi() % SACRIFICE_TIME.size()]
-	# Put it all together
-	var sacrifice = Sacrifice.new(subject, null, null, null)
-	return sacrifice
-
 func setup_sages():
-	var hints = CultMember.get_hints(members[sacrifice.subject_id])
+	var hints = CultMember.get_hints(members[lamb])
 	hints.resize(4)
 	var hints_a = hints.duplicate()
 	var hints_b = hints.duplicate()
@@ -208,12 +151,11 @@ func _ready():
 	setup_game()
 	for next in members.values():
 		print(CultMember.get_full_details(next))
-	#print("The one who must be sacrificed is %s" % [CultMember.get_full_name(members[sacrifice.subject_id])])
 	setup_sages()
 	for i in range(0, 3):
 		print("Sage #%d says:" % int(i+1))
 		for next in sages[i]:
 			print("\"%s\"" % next)
-	print("The lamb is %s" % CultMember.get_full_name(members[sacrifice.subject_id]))
+	print("The lamb is %s" % CultMember.get_full_name(members[lamb]))
 	print("The fake sage is #%d" % int(fake_sage+1))
 	
