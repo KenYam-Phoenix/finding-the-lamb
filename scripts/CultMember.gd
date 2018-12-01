@@ -6,7 +6,7 @@ extends Node
 
 const FIRST_NAMES_MALE = ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Charles", "Joseph", "Thomas", "Christopher", "Daniel", "Paul", "Mark", "Donald", "George", "Kenneth"]
 const FIRST_NAMES_FEMALE = ["Mary", "Patricia", "Linda", "Barbara", "Elizabeth", "Jennifer", "Maria", "Susan", "Margaret", "Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen", "Sandra", "Donna", "Carol"]
-const SURNAMES = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Hall"]
+const SURNAMES = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Hall", "Allen", "Young", "Hernandez", "King", "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter"]
 
 const PROFESSIONS = {
 	"NONE": {
@@ -125,7 +125,8 @@ func set_married(member, value):
 func add_child_id(member, id):
 	member["children_ids"].append(id)
 
-func make_newcomer():
+func make_newcomer(generation):
+	randomize()
 	var is_male = true
 	if randf() > 0.5: is_male = false
 	# Choose a first name
@@ -142,11 +143,12 @@ func make_newcomer():
 	member["last_name"] = last_name
 	member["is_male"] = is_male
 	member["profession"] = PROFESSIONS.keys()[randi() % PROFESSIONS.size()]
-	member["generation"] = 0
+	member["generation"] = generation
 	counter += 1
 	return member
 
 func make_child(mother, father):
+	randomize()
 	var is_male = true
 	if randf() > 0.5: is_male = false
 	# Choose a first name
@@ -168,3 +170,6 @@ func make_child(mother, father):
 	member["id"] = counter
 	counter += 1
 	return member
+
+func _ready():
+	randomize()

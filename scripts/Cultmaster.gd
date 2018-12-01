@@ -44,7 +44,7 @@ class Location:
 # I'm storing these in dicts because Godot copies values where Java would reference them -
 # in function arguments and the like - so it's better to instead deal with an object's ID,
 # under which they'll be stored in these dicts.
-var members = {}
+var members
 var weapons = []
 var locations = []
 
@@ -77,6 +77,35 @@ func find_eligable_wife(male):
 	#print("Couldn't find an eligable wife for %s" % [CultMember.get_full_name(male)])
 	return null
 
+func get_latest_generation():
+	var result = 0
+	for next in members.values():
+		result = max(result, CultMember.get_generation(next))
+	return result
+
+# We assume that, for some strange reason, if someone has great-grandchildren, they have died.
+func get_living_member_count():
+	var gen = get_latest_generation()
+	var result = 0
+	for next in members.values():
+		if CultMember.get_generation(next) >= gen - 2:
+			result += 1
+	return result
+
+func get_member_count_for_generation(which):
+	var result = 0
+	for next in members.values():
+		if CultMember.get_generation(next) == which: result += 1
+	return result
+
+func get_unique_surname_count_for_generation(which):
+	var result = []
+	for next in members.values():
+		if CultMember.get_generation(next) == which:
+			var surname = CultMember.get_last_name(next)
+			if not surname in result: result.append(surname)
+	return result.size()
+
 # Takes a single man, finds him the first suitable non-married woman,
 # and forces them to start a family. 10/10 cult simulation
 func make_family():
@@ -85,30 +114,53 @@ func make_family():
 	var husband = members[husband_id]
 	var wife_id = find_eligable_wife(husband)
 	var wife = members[wife_id]
-	print("%s is marrying %s" % [CultMember.get_full_name(wife), CultMember.get_full_name(husband)])
+	#print("%s is marrying %s" % [CultMember.get_full_name(wife), CultMember.get_full_name(husband)])
 	# Back off, everyone else; they're taken
 	for next in [husband, wife]:
 		CultMember.set_married(next, true)
 	CultMember.set_last_name(wife, CultMember.get_last_name(husband))
 	# Make a few kids
-	for i in range(0, rand_range(1, 4)):
-		var child = CultMember.make_child(wife, husband)
-		CultMember.add_child_id(husband, CultMember.get_id(child))
-		CultMember.add_child_id(wife, CultMember.get_id(child))
-		members[CultMember.get_id(child)] = child
-		print("%s, child of %s and %s, is born" % [CultMember.get_full_name(child), CultMember.get_first_name(husband), CultMember.get_first_name(wife)])
+	if randf() > 0.15:
+		for i in range(0, rand_range(1, 5)):
+			var child = CultMember.make_child(wife, husband)
+			CultMember.add_child_id(husband, CultMember.get_id(child))
+			CultMember.add_child_id(wife, CultMember.get_id(child))
+			members[CultMember.get_id(child)] = child
+			#print("%s, child of %s and %s, is born" % [CultMember.get_full_name(child), CultMember.get_first_name(husband), CultMember.get_first_name(wife)])
 	return true
 
-func make_cult_population():
+func make_newcomer(gen):
+	var newcomer = CultMember.make_newcomer(gen)
+	members[CultMember.get_id(newcomer)] = newcomer
+	#print("%s joined the village" % [CultMember.get_full_name(newcomer)])
+
+func try_populating_cult():
+	members = {}
 	# Start by making just a few generation-zero members
-	for i in range(0, 6):
-		var newcomer = CultMember.make_newcomer()
-		members[CultMember.get_id(newcomer)] = newcomer
-		print("%s joined the village" % [CultMember.get_full_name(newcomer)])
+	for i in range(0, 7):
+		make_newcomer(0)
 	# While (able to make babies): make_babies()
-	var result = true
-	while result == true:
-		result = make_family()
+	while get_living_member_count() < 16:
+		var gen = get_latest_generation()
+		# Every 1 in 3 newcomers will be from outside the cult, not born within
+		if randf() > 0.66: make_newcomer(gen)
+		else: make_family()
+
+# The generation algorithm we're using is a bit... crap.
+# So rather than improve it, let's just impose a bunch of constraints,
+# and make it repeat itself over and over, until it gives us what we want.
+func make_cult_population():
+	var acceptable = false
+	while !acceptable:
+		try_populating_cult()
+		acceptable = true
+		for i in range (1, 3):
+			if get_member_count_for_generation(i) < 4:
+				acceptable = false
+			if get_unique_surname_count_for_generation(i) < 3:
+				acceptable = false
+		if get_latest_generation() > 3:
+			acceptable = false
 
 # Of all the items generated so far, randomly select the ones that will be needed
 func choose_necessary_sacrifice():
