@@ -19,6 +19,10 @@ config/name="Finding the Lamb"
 run/main_scene="res://scenes/Testbed.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+CultMember="*res://scripts/CultMember.gd"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
