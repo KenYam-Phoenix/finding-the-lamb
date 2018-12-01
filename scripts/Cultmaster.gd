@@ -47,6 +47,9 @@ class Location:
 var members
 var weapons = []
 var locations = []
+var sacrifice
+var sages
+var fake_sage
 
 func get_member_by_id(id):
 	return members[id]
@@ -155,10 +158,11 @@ func try_populating_cult():
 # The generation algorithm we're using is a bit... crap.
 # So rather than improve it, let's just impose a bunch of constraints,
 # and make it repeat itself over and over, until it gives us what we want.
-func make_cult_population():
+func setup_game():
 	var acceptable = false
 	while !acceptable:
 		try_populating_cult()
+		sacrifice = choose_necessary_sacrifice()
 		acceptable = true
 		for i in range (1, 3):
 			if get_member_count_for_generation(i) < 4:
@@ -167,6 +171,15 @@ func make_cult_population():
 				acceptable = false
 		if get_latest_generation() > 3:
 			acceptable = false
+		# Make sure we have at least four hints
+		var hints = CultMember.get_hints(members[sacrifice.subject_id])
+		if hints.size() < 4: acceptable = false
+		# Make sure we don't have any shared names
+		var names = []
+		for next_person in members.values():
+			if CultMember.get_full_name(next_person) in names:
+				acceptable = false
+			else: names.append(CultMember.get_full_name(next_person))
 
 # Of all the items generated so far, randomly select the ones that will be needed
 func choose_necessary_sacrifice():
@@ -178,12 +191,29 @@ func choose_necessary_sacrifice():
 	var sacrifice = Sacrifice.new(subject, null, null, null)
 	return sacrifice
 
+func setup_sages():
+	var hints = CultMember.get_hints(members[sacrifice.subject_id])
+	hints.resize(4)
+	var hints_a = hints.duplicate()
+	var hints_b = hints.duplicate()
+	hints_a.resize(2)
+	for i in range(0, 2): hints_b.remove(0)
+	var fake_hints = CultMember.get_hints(members[randi() % 16])
+	fake_hints.resize(2)
+	sages = [hints_a, hints_b]
+	fake_sage = randi() % 3
+	sages.insert(fake_sage, fake_hints)
+
 func _ready():
-	make_cult_population()
-	var sacrifice = choose_necessary_sacrifice()
+	setup_game()
 	for next in members.values():
 		print(CultMember.get_full_details(next))
 	#print("The one who must be sacrificed is %s" % [CultMember.get_full_name(members[sacrifice.subject_id])])
-	var hints = CultMember.get_hints(members[sacrifice.subject_id])
-	for next_hint in hints:
-		print(next_hint)
+	setup_sages()
+	for i in range(0, 3):
+		print("Sage #%d says:" % int(i+1))
+		for next in sages[i]:
+			print("\"%s\"" % next)
+	print("The lamb is %s" % CultMember.get_full_name(members[sacrifice.subject_id]))
+	print("The fake sage is #%d" % int(fake_sage+1))
+	

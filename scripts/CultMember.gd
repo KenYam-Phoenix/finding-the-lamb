@@ -130,6 +130,10 @@ func get_hints(member):
 		var spouse = Cultmaster.get_member_by_id(get_spouse_id(member))
 		var spouse_profession_hints = PROFESSIONS[get_profession(spouse)]["hints"]
 		hints.append("The lamb's partner " + spouse_profession_hints[randi() % spouse_profession_hints.size()] + ".")
+	# Hints regarding which generation they're in
+	match get_generation(member):
+		0: hints.append("The lamb was amongst the founders of our faith.")
+		2: hints.append("The lamb is among the newest of our faith.")
 	return hints
 
 func get_id(member):
