@@ -62,6 +62,9 @@ const PROFESSIONS = {
 	}
 }
 
+func get_profession_title(profession):
+	return PROFESSIONS[profession]["title"]
+
 var counter = 0
 
 const TEMPLATE = {
