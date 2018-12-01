@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 CultMember="*res://scripts/CultMember.gd"
+Cultmaster="*res://scripts/Cultmaster.gd"
 
 [rendering]
 

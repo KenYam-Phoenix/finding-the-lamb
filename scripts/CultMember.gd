@@ -11,14 +11,14 @@ const SURNAMES = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Mi
 const PROFESSIONS = {
 	"NONE": {
 		"title": "Unemployed",
-		"clues": [
+		"hints": [
 			"is a leech on our society",
 			"does not do their part"
 		]
 	},
 	"DOCTOR": {
 		"title": "Doctor",
-		"clues": [
+		"hints": [
 			"tends to the sick",
 			"is well-acquainted with the scalpel",
 			"does not shy at the sight of blood"
@@ -26,35 +26,35 @@ const PROFESSIONS = {
 	},
 	"LOOKOUT": {
 		"title": "Lookout",
-		"clues": [
+		"hints": [
 			"has keen eyes",
 			"watches over us all"
 		]
 	},
 	"MEDIUM": {
 		"title": "Medium",
-		"clues": [
+		"hints": [
 			"communes with the faithful departed",
 			"pierces the veil of death, and speaks to those beyond"
 		]
 	},
 	"BLACKSMITH": {
 		"title": "Blacksmith",
-		"clues": [
+		"hints": [
 			"forges mighty steel",
 			"bends iron to their will"
 		]
 	},
 	"FARMER": {
 		"title": "Farmer",
-		"clues": [
+		"hints": [
 			"ploughs the Earth",
 			"tends the land"
 		]
 	},
 	"TEACHER": {
 		"title": "Teacher",
-		"clues": [
+		"hints": [
 			"plants the seeds of faith in the minds of the children",
 			"spreads the word of truth",
 			"holds at bay the scourge of rebellious thought"
@@ -74,11 +74,63 @@ const TEMPLATE = {
 	"profession": "NONE",
 	"mother_id": -1,
 	"father_id": -1,
+	"spouse_id": -1,
 	"children_ids": [],
 	"generation": -1,
 	"married": false,
 	"alive": true
 }
+
+func get_hints(member):
+	var hints = []
+	# Child count hints
+	var child_count = get_children_ids(member).size()
+	if child_count == 0:
+		hints.append("The lamb is without child.")
+	else:
+		if is_male(member):
+			hints.append("The lamb has sired an heir.")
+		else:
+			hints.append("The lamb has brought life into this world.")
+		# No partner
+		if get_spouse_id(member) == -1:
+			hints.append("The lamb is solitary.")
+	# Are they a newcomer to the cult?
+	if get_mother_id(member) == -1:
+		hints.append("The lamb is a newcomer to the creed.")
+	else:
+		# Were either/both of their parents newcomers to the cult?
+		var mother = Cultmaster.get_member_by_id(get_mother_id(member))
+		var father = Cultmaster.get_member_by_id(get_father_id(member))
+		if get_mother_id(mother) == -1:
+			if get_mother_id(father) == -1:
+				hints.append("The lamb's parents were newcomers to the creed.")
+			else:
+				hints.append("The lamb's mother was not born into our faith.")
+		else:
+			if get_mother_id(father) == -1:
+				hints.append("The lamb's father was not born into our faith.")
+			else:
+				hints.append("The lamb is well-rooted within our society.")
+	# Hints relating to their profession
+	var profession_hints = PROFESSIONS[get_profession(member)]["hints"]
+	hints.append("The lamb " + profession_hints[randi() % profession_hints.size()] + ".")
+	# Hints relating to their mother
+	if get_mother_id(member) != -1:
+		var mother = Cultmaster.get_member_by_id(get_mother_id(member))
+		var mother_profession_hints = PROFESSIONS[get_profession(mother)]["hints"]
+		hints.append("The lamb's mother " + mother_profession_hints[randi() % mother_profession_hints.size()] + ".")
+	# Hints relating to their father
+	if get_father_id(member) != -1:
+		var father = Cultmaster.get_member_by_id(get_father_id(member))
+		var father_profession_hints = PROFESSIONS[get_profession(father)]["hints"]
+		hints.append("The lamb's father " + father_profession_hints[randi() % father_profession_hints.size()] + ".")
+	# Hints relating to their spouse
+	if get_spouse_id(member) != -1:
+		var spouse = Cultmaster.get_member_by_id(get_spouse_id(member))
+		var spouse_profession_hints = PROFESSIONS[get_profession(spouse)]["hints"]
+		hints.append("The lamb's partner " + spouse_profession_hints[randi() % spouse_profession_hints.size()] + ".")
+	return hints
 
 func get_id(member):
 	return member["id"]
@@ -95,11 +147,17 @@ func get_full_name(member):
 func is_male(member):
 	return member["is_male"]
 
+func get_profession(member):
+	return member["profession"]
+
 func get_mother_id(member):
 	return member["mother_id"]
 
 func get_father_id(member):
 	return member["father_id"]
+
+func get_spouse_id(member):
+	return member["spouse_id"]
 
 func get_children_ids(member):
 	return member["children_ids"]
@@ -114,13 +172,16 @@ func is_alive(member):
 	return member["alive"]
 
 func get_full_details(member):
-	return "%s %s, %d, %s" % [member["first_name"], member["last_name"], member["generation"], member["profession"]]
+	return "%d: %s %s, %d, %s, %d, %d, %d" % [member["id"], member["first_name"], member["last_name"], member["generation"], member["profession"], member["mother_id"], member["father_id"], member["spouse_id"]]
 
 func set_last_name(member, value):
 	member["last_name"] = value
 
 func set_married(member, value):
 	member["married"] = value
+
+func set_spouse_id(member, id):
+	member["spouse_id"] = id
 
 func add_child_id(member, id):
 	member["children_ids"].append(id)
@@ -137,7 +198,7 @@ func make_newcomer(generation):
 		first_name = FIRST_NAMES_FEMALE[randi() % FIRST_NAMES_FEMALE.size()]
 	var last_name = SURNAMES[randi() % SURNAMES.size()]
 	# Put it all together
-	var member = TEMPLATE.duplicate()
+	var member = TEMPLATE.duplicate(true)
 	member["id"] = counter
 	member["first_name"] = first_name
 	member["last_name"] = last_name
@@ -158,7 +219,7 @@ func make_child(mother, father):
 	else:
 		first_name = FIRST_NAMES_FEMALE[randi() % FIRST_NAMES_FEMALE.size()]
 	# Put it all together
-	var member = TEMPLATE.duplicate()
+	var member = TEMPLATE.duplicate(true)
 	member["id"] = counter
 	member["first_name"] = first_name
 	member["last_name"] = get_last_name(father)
@@ -171,5 +232,6 @@ func make_child(mother, father):
 	counter += 1
 	return member
 
-func _ready():
+func reset():
 	randomize()
+	counter = 0

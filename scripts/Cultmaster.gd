@@ -48,6 +48,9 @@ var members
 var weapons = []
 var locations = []
 
+func get_member_by_id(id):
+	return members[id]
+
 const SACRIFICE_TIME = {
 	"SUNRISE": {},
 	"NOON": {},
@@ -115,6 +118,8 @@ func make_family():
 	var wife_id = find_eligable_wife(husband)
 	var wife = members[wife_id]
 	#print("%s is marrying %s" % [CultMember.get_full_name(wife), CultMember.get_full_name(husband)])
+	CultMember.set_spouse_id(husband, wife_id)
+	CultMember.set_spouse_id(wife, husband_id)
 	# Back off, everyone else; they're taken
 	for next in [husband, wife]:
 		CultMember.set_married(next, true)
@@ -135,6 +140,7 @@ func make_newcomer(gen):
 	#print("%s joined the village" % [CultMember.get_full_name(newcomer)])
 
 func try_populating_cult():
+	CultMember.reset()
 	members = {}
 	# Start by making just a few generation-zero members
 	for i in range(0, 7):
@@ -165,14 +171,19 @@ func make_cult_population():
 # Of all the items generated so far, randomly select the ones that will be needed
 func choose_necessary_sacrifice():
 	var subject = members.keys()[randi() % members.size()]
-	var weapon = weapons.keys()[randi() % weapons.size()]
-	var location = locations.keys()[randi() % locations.size()]
-	var time = SACRIFICE_TIME.keys()[randi() % SACRIFICE_TIME.size()]
+	#var weapon = weapons.keys()[randi() % weapons.size()]
+	#var location = locations.keys()[randi() % locations.size()]
+	#var time = SACRIFICE_TIME.keys()[randi() % SACRIFICE_TIME.size()]
 	# Put it all together
-	var sacrifice = Sacrifice.new(subject, weapon, location, time)
+	var sacrifice = Sacrifice.new(subject, null, null, null)
 	return sacrifice
 
 func _ready():
 	make_cult_population()
+	var sacrifice = choose_necessary_sacrifice()
 	for next in members.values():
 		print(CultMember.get_full_details(next))
+	#print("The one who must be sacrificed is %s" % [CultMember.get_full_name(members[sacrifice.subject_id])])
+	var hints = CultMember.get_hints(members[sacrifice.subject_id])
+	for next_hint in hints:
+		print(next_hint)
