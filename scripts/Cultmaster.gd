@@ -2,52 +2,6 @@ extends Node
 
 # This file deals with all of the behind-the-scenes stuff regarding the cult
 # and the sacrifice that needs to be made.
-const PROFESSION = {
-	"DOCTOR": {
-		"title": "Doctor",
-		"clues": [
-			"tends to the sick",
-			"is well-acquainted with the scalpel",
-			"does not shy at the sight of blood"
-		]
-	},
-	"LOOKOUT": {
-		"title": "Lookout",
-		"clues": [
-			"has keen eyes",
-			"watches over us all"
-		]
-	},
-	"MEDIUM": {
-		"title": "Medium",
-		"clues": [
-			"communes with the faithful departed",
-			"pierces the veil of death, and speaks to those beyond"
-		]
-	},
-	"BLACKSMITH": {
-		"title": "Blacksmith",
-		"clues": [
-			"forges mighty steel",
-			"bends iron to their will"
-		]
-	},
-	"FARMER": {
-		"title": "Farmer",
-		"clues": [
-			"ploughs the Earth",
-			"tends the land"
-		]
-	},
-	"TEACHER": {
-		"title": "Teacher",
-		"clues": [
-			"plants the seeds of faith in the minds of the children",
-			"spreads the word of truth",
-			"holds at bay the scourge of rebellious thought"
-		]
-	}
-}
 
 const WEAPON_MATERIAL = {
 	"STEEL": {},
@@ -168,3 +122,5 @@ func choose_necessary_sacrifice():
 
 func _ready():
 	make_cult_population()
+	for next in members.values():
+		print(CultMember.get_full_details(next))

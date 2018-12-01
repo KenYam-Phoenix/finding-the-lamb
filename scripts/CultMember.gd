@@ -8,6 +8,59 @@ const FIRST_NAMES_MALE = ["James", "John", "Robert", "Michael", "William", "Davi
 const FIRST_NAMES_FEMALE = ["Mary", "Patricia", "Linda", "Barbara", "Elizabeth", "Jennifer", "Maria", "Susan", "Margaret", "Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen", "Sandra", "Donna", "Carol"]
 const SURNAMES = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Hall"]
 
+const PROFESSIONS = {
+	"NONE": {
+		"title": "Unemployed",
+		"clues": [
+			"is a leech on our society",
+			"does not do their part"
+		]
+	},
+	"DOCTOR": {
+		"title": "Doctor",
+		"clues": [
+			"tends to the sick",
+			"is well-acquainted with the scalpel",
+			"does not shy at the sight of blood"
+		]
+	},
+	"LOOKOUT": {
+		"title": "Lookout",
+		"clues": [
+			"has keen eyes",
+			"watches over us all"
+		]
+	},
+	"MEDIUM": {
+		"title": "Medium",
+		"clues": [
+			"communes with the faithful departed",
+			"pierces the veil of death, and speaks to those beyond"
+		]
+	},
+	"BLACKSMITH": {
+		"title": "Blacksmith",
+		"clues": [
+			"forges mighty steel",
+			"bends iron to their will"
+		]
+	},
+	"FARMER": {
+		"title": "Farmer",
+		"clues": [
+			"ploughs the Earth",
+			"tends the land"
+		]
+	},
+	"TEACHER": {
+		"title": "Teacher",
+		"clues": [
+			"plants the seeds of faith in the minds of the children",
+			"spreads the word of truth",
+			"holds at bay the scourge of rebellious thought"
+		]
+	}
+}
 
 var counter = 0
 
@@ -18,6 +71,7 @@ const TEMPLATE = {
 	"is_male": true,	# Binary choice, partly due to time constraints and partly because
 						# this game is depressing enough without considering how enbies fare in cults.
 						# Same goes for why you'll only find heterosexual partnerships herein.
+	"profession": "NONE",
 	"mother_id": -1,
 	"father_id": -1,
 	"children_ids": [],
@@ -59,6 +113,9 @@ func is_married(member):
 func is_alive(member):
 	return member["alive"]
 
+func get_full_details(member):
+	return "%s %s, %d, %s" % [member["first_name"], member["last_name"], member["generation"], member["profession"]]
+
 func set_last_name(member, value):
 	member["last_name"] = value
 
@@ -84,6 +141,7 @@ func make_newcomer():
 	member["first_name"] = first_name
 	member["last_name"] = last_name
 	member["is_male"] = is_male
+	member["profession"] = PROFESSIONS.keys()[randi() % PROFESSIONS.size()]
 	member["generation"] = 0
 	counter += 1
 	return member
@@ -103,6 +161,7 @@ func make_child(mother, father):
 	member["first_name"] = first_name
 	member["last_name"] = get_last_name(father)
 	member["is_male"] = is_male
+	member["profession"] = PROFESSIONS.keys()[randi() % PROFESSIONS.size()]
 	member["mother_id"] = get_id(mother)
 	member["father_id"] = get_id(father)
 	member["generation"] = get_generation(father) + 1
