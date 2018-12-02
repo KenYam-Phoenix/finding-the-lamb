@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 CultMember="*res://scripts/CultMember.gd"
 Cultmaster="*res://scripts/Cultmaster.gd"
+Tutorials="*res://scripts/Tutorials.gd"
 
 [display]
 

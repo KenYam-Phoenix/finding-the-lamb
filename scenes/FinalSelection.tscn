@@ -193,6 +193,7 @@ flat = true
 align = 1
 
 [node name="Tutorial" parent="." instance=ExtResource( 4 )]
+slug = "final"
 text = "The minute hand on your watch hasn't changed since the last five times you looked at it; the time is approaching. Despite your efforts to remain calm, the enormity of the situation is finally settling on you.
 
 Your members are in their homes, aware of the role that might fall to them. Each of them are ready, should it fall to them; each know that the needs of the creed outweigh their own lives.

@@ -3,11 +3,11 @@
 [ext_resource path="res://scripts/SpiritCommunication.gd" type="Script" id=1]
 [ext_resource path="res://graphics/statue.jpg" type="Texture" id=2]
 [ext_resource path="res://objects/SpiritMessage.tscn" type="PackedScene" id=3]
-[ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=4]
-[ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=5]
-[ext_resource path="res://sounds/choir.ogg" type="AudioStream" id=6]
-[ext_resource path="res://sounds/inhale.ogg" type="AudioStream" id=7]
-[ext_resource path="res://sounds/exhale.ogg" type="AudioStream" id=8]
+[ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=4]
+[ext_resource path="res://sounds/choir.ogg" type="AudioStream" id=5]
+[ext_resource path="res://sounds/inhale.ogg" type="AudioStream" id=6]
+[ext_resource path="res://sounds/exhale.ogg" type="AudioStream" id=7]
+[ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=8]
 [ext_resource path="res://objects/FadeIn.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Shader" id=1]
@@ -77,14 +77,6 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
 
-[node name="Label_Tutorial" parent="." instance=ExtResource( 4 )]
-visible = false
-text = "A cold chill washes over you as you come before the statue. No amount of familiarity can ease the sense of dread that permates this place, no matter how many nights you spend here in meditation.
-
-The statue looms down from above, silently asking what pitiful quest brings you before it. With trembling hands, you reach for the incences that you will need; that, once inhaled, will lift your mind beyond this mortal realm, and allow you to hear what those beyond will tell you.
-
-The rules are the same as ever; there are three of them. Two will lead you true, and one will deceive you. Once you have begun, there is no turning back; you must solve their riddle. Fail to discern who is lying, and your people will no longer be a source of amusement to them..."
-
 [node name="Button_Exhale" type="Button" parent="."]
 visible = false
 anchor_left = 0.5
@@ -102,7 +94,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -112,7 +104,7 @@ flat = true
 align = 1
 
 [node name="Ambience" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 5 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = true
@@ -121,7 +113,7 @@ mix_target = 0
 bus = "Master"
 
 [node name="Inhale" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 6 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
@@ -130,7 +122,7 @@ mix_target = 0
 bus = "Master"
 
 [node name="Exhale" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 8 )
+stream = ExtResource( 7 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
@@ -154,7 +146,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -197,7 +189,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -221,7 +213,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -245,7 +237,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -253,6 +245,14 @@ group = null
 text = "Inhale Blue Herbs"
 flat = true
 align = 1
+
+[node name="Tutorial" parent="." instance=ExtResource( 8 )]
+slug = "spirits"
+text = "A cold chill washes over you as you come before the statue. No amount of familiarity can ease the sense of dread that permates this place, no matter how many nights you spend here in meditation.
+
+The statue looms down from above, silently asking what pitiful quest brings you before it. With trembling hands, you reach for the incences that you will need; that, once inhaled, will lift your mind beyond this mortal realm, and allow you to hear what those beyond will tell you.
+
+The rules are the same as ever; there are three of them. Two will lead you true, and one will deceive you. Once you have begun, there is no turning back; you must solve their riddle. Fail to discern who is lying, and your people will no longer be a source of amusement to them..."
 
 [node name="FadeIn" parent="." instance=ExtResource( 9 )]
 
