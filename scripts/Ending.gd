@@ -11,7 +11,7 @@ var stage = 0
 const SACRIFICE_A = [
 	"Your entourage shuffles from the security of the village into the cold unknown. Few speak beyond the occasional murmur.",
 	"The lamb is silent, and never once meets your eyes. You have to wonder if, somehow, it had known all along.",
-	"Without ceremony, you reach the ceremonial grounds. A rudimentary altar juts from the ground. The lamb embraces its friends half-heartedly, then lies down.",
+	"Without ceremony, you come to the preordained place. A rudimentary altar juts from the ground. The lamb embraces its friends half-heartedly, then lies down.",
 ]
 const SACRIFICE_B = [
 	"The lamb writhes as you plunge the knife into its gut. Its eyes are open now, locked on yours as you return the blade to your side, your hand sticky with blood.",
