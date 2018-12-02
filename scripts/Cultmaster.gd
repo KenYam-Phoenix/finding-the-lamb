@@ -128,6 +128,9 @@ func setup_game():
 				acceptable = false
 		if get_latest_generation() > 3:
 			acceptable = false
+		# Make sure we don't have too many members
+		if members.size() > 16:
+			acceptable = false
 		# Make sure we have at least four hints
 		var hints = CultMember.get_hints(members[lamb])
 		if hints.size() < 4: acceptable = false
