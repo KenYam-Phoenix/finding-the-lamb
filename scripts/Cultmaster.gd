@@ -153,13 +153,16 @@ func setup_sages():
 
 func _ready():
 	setup_game()
-	for next in members.values():
-		print(CultMember.get_full_details(next))
 	setup_sages()
-	for i in range(0, 3):
-		print("Sage #%d says:" % int(i+1))
-		for next in sages[i]:
-			print("\"%s\"" % next)
-	print("The lamb is %s" % CultMember.get_full_name(members[lamb]))
-	print("The fake sage is #%d" % int(fake_sage+1))
+	pass
+#	setup_game()
+#	for next in members.values():
+#		print(CultMember.get_full_details(next))
+#	setup_sages()
+#	for i in range(0, 3):
+#		print("Sage #%d says:" % int(i+1))
+#		for next in sages[i]:
+#			print("\"%s\"" % next)
+#	print("The lamb is %s" % CultMember.get_full_name(members[lamb]))
+#	print("The fake sage is #%d" % int(fake_sage+1))
 	
