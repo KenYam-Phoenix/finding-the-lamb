@@ -4,6 +4,7 @@ onready var anim_player = $AnimationPlayer
 onready var label_paragraph1 = $Center/VBox/Label_Paragraph1
 onready var label_paragraph2 = $Center/VBox/Label_Paragraph2
 onready var label_paragraph3 = $Center/VBox/Label_Paragraph3
+onready var audio_ambience = $Audio_Ambience
 
 var stage = 0
 
@@ -39,6 +40,7 @@ const ENDING_BOTH_WRONG = [
 ]
 
 func _ready():
+	audio_ambience.play()
 	anim_player.play("FadeIn")
 
 func setup_block():
