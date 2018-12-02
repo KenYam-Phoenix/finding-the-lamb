@@ -26,3 +26,10 @@ func _seeMemberRecords():
 func _backToMenu():
 	vbox_menu.show()
 	vbox_areyousure.hide()
+
+func _tutorial_done():
+	vbox_menu.show()
+
+func _ready():
+	if Tutorials.tutorial_already_shown("hub"):
+		vbox_menu.show()

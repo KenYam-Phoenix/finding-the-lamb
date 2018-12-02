@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/Overworld.gd" type="Script" id=1]
 [ext_resource path="res://graphics/pool.jpg" type="Texture" id=2]
 [ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=3]
+[ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=4]
 
 [node name="Overworld" type="Control"]
 anchor_left = 0.0
@@ -32,6 +33,7 @@ texture = ExtResource( 2 )
 stretch_mode = 0
 
 [node name="VBox_Menu" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -231,8 +233,15 @@ text = "No"
 flat = true
 align = 1
 
+[node name="Tutorial" parent="." instance=ExtResource( 4 )]
+slug = "hub"
+text = "Staring at the water, you draw a deep breath to cool your nerves. You have until the witching hour to ascertain the identity of the Lamb. One of your own will be the vessel through which destruction can be averted... at a cost.
+
+You consider stepping into your office and consulting your notes, but all you have are the records of the members of your faith. You will need to consult with those beyond this world if you hope to succeed."
+
 [connection signal="pressed" from="VBox_Menu/Button_Members" to="." method="_seeMemberRecords"]
 [connection signal="pressed" from="VBox_Menu/Button_Spirits" to="." method="_consultSpirits"]
 [connection signal="pressed" from="VBox_Menu/Button_FinalChoice" to="." method="_displayAreYouSure"]
 [connection signal="pressed" from="VBox_AreYouSure/HBox/Button_Yes" to="." method="_gotoFinalSelection"]
 [connection signal="pressed" from="VBox_AreYouSure/HBox/Button_No" to="." method="_backToMenu"]
+[connection signal="tutorial_done" from="Tutorial" to="." method="_tutorial_done"]
