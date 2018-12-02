@@ -131,6 +131,7 @@ mix_target = 0
 bus = "Master"
 
 [node name="Button_Done" type="Button" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -157,6 +158,7 @@ align = 1
 
 [node name="HBox_Inhale" type="HBoxContainer" parent="."]
 editor/display_folded = true
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -261,3 +263,4 @@ The rules are the same as ever; there are three of them. Two will lead you true,
 [connection signal="pressed" from="HBox_Inhale/Button_Inhale_Red" to="." method="_inhale_red"]
 [connection signal="pressed" from="HBox_Inhale/Button_Inhale_Green" to="." method="_inhale_green"]
 [connection signal="pressed" from="HBox_Inhale/Button_Inhale_Blue" to="." method="_inhale_blue"]
+[connection signal="tutorial_done" from="Tutorial" to="." method="_tutorial_done"]

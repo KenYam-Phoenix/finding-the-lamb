@@ -2,6 +2,7 @@ extends Control
 
 const obj_transition = preload("res://objects/Transition.tscn")
 
+onready var vbox = $VBox
 onready var menu_lamb = $VBox/Menu_Lamb
 onready var menu_spirit = $VBox/Menu_Spirit
 onready var button_confirm = $Button_Confirm
@@ -41,3 +42,7 @@ func _confirm():
 	var transition = obj_transition.instance()
 	transition.destination = "res://scenes/Ending.tscn"
 	add_child(transition)
+
+func _tutorial_done():
+	vbox.show()
+	button_confirm.show()

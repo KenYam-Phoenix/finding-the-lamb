@@ -34,6 +34,7 @@ texture = ExtResource( 2 )
 stretch_mode = 0
 
 [node name="VBox" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -166,6 +167,7 @@ align = 1
 items = [  ]
 
 [node name="Button_Confirm" type="Button" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -205,3 +207,4 @@ It is time to make your decision."
 [node name="FadeIn" parent="." instance=ExtResource( 5 )]
 
 [connection signal="pressed" from="Button_Confirm" to="." method="_confirm"]
+[connection signal="tutorial_done" from="Tutorial" to="." method="_tutorial_done"]

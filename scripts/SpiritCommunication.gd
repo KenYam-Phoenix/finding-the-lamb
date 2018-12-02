@@ -62,3 +62,7 @@ func _backToMenu():
 	var transition = obj_transition.instance()
 	transition.destination = "res://scenes/Overworld.tscn"
 	add_child(transition)
+
+func _tutorial_done():
+	hbox_inhale.visible = true
+	button_done.visible = true
