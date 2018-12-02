@@ -64,7 +64,7 @@ func setup_block():
 		anim_player.play("FadeOut")
 		return
 	elif stage == 5:
-		get_tree().change_scene("res://scenes/Overworld.tscn")
+		get_tree().change_scene("res://scenes/TitleScreen.tscn")
 		return
 	# Set it into paragraphs
 	var paragraphs = [label_paragraph1, label_paragraph2, label_paragraph3]
