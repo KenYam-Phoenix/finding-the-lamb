@@ -1,5 +1,7 @@
 extends Control
 
+const obj_transition = preload("res://objects/Transition.tscn")
+
 onready var menu_lamb = $VBox/Menu_Lamb
 onready var menu_spirit = $VBox/Menu_Spirit
 onready var button_confirm = $Button_Confirm
@@ -36,4 +38,6 @@ func spirit_selected(id):
 func _confirm():
 	Cultmaster.chosen_lamb = which_lamb
 	Cultmaster.chosen_spirit = which_spirit
-	get_tree().change_scene("res://scenes/Ending.tscn")
+	var transition = obj_transition.instance()
+	transition.destination = "res://scenes/Ending.tscn"
+	add_child(transition)

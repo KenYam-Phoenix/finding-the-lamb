@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/FinalSelection.gd" type="Script" id=1]
 [ext_resource path="res://graphics/pool2.jpg" type="Texture" id=2]
 [ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=3]
 [ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=4]
+[ext_resource path="res://objects/FadeIn.tscn" type="PackedScene" id=5]
 
 [node name="FinalSelection" type="Control"]
 anchor_left = 0.0
@@ -192,7 +193,6 @@ flat = true
 align = 1
 
 [node name="Tutorial" parent="." instance=ExtResource( 4 )]
-visible = false
 text = "The minute hand on your watch hasn't changed since the last five times you looked at it; the time is approaching. Despite your efforts to remain calm, the enormity of the situation is finally settling on you.
 
 Your members are in their homes, aware of the role that might fall to them. Each of them are ready, should it fall to them; each know that the needs of the creed outweigh their own lives.
@@ -200,5 +200,7 @@ Your members are in their homes, aware of the role that might fall to them. Each
 More pressing than that is the demand of the spirits. Fail to win their game, and they will surely find new ways of entertaining themselves with you...
 
 It is time to make your decision."
+
+[node name="FadeIn" parent="." instance=ExtResource( 5 )]
 
 [connection signal="pressed" from="Button_Confirm" to="." method="_confirm"]

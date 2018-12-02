@@ -3,8 +3,10 @@ extends Control
 const obj_memberoverview = preload("res://objects/MemberOverview.tscn")
 
 onready var vbox_members = $ScrollContainer/VBox_Members
+onready var audio_bookopen = $Audio_BookOpen
 
 func _ready():
+	audio_bookopen.play()
 	var members = Cultmaster.members.values()
 	for next_member in members:
 		var member_overview = obj_memberoverview.instance()

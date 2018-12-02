@@ -1,18 +1,24 @@
 extends Control
 
+const obj_transition = preload("res://objects/Transition.tscn")
+
 onready var vbox_menu = $VBox_Menu
 onready var vbox_areyousure = $VBox_AreYouSure
 
+func transition(scene):
+	var transition = obj_transition.instance()
+	transition.destination = scene
+	add_child(transition)
 
 func _gotoFinalSelection():
-	get_tree().change_scene("res://scenes/FinalSelection.tscn")
+	transition("res://scenes/FinalSelection.tscn")
 
 func _displayAreYouSure():
 	vbox_menu.hide()
 	vbox_areyousure.show()
 
 func _consultSpirits():
-	get_tree().change_scene("res://scenes/SpiritCommunication.tscn")
+	transition("res://scenes/SpiritCommunication.tscn")
 
 func _seeMemberRecords():
 	get_tree().change_scene("res://scenes/MemberList.tscn")

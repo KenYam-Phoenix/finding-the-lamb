@@ -1,5 +1,7 @@
 extends Control
 
+const obj_transition = preload("res://objects/Transition.tscn")
+
 onready var spirit_message = $SpiritMessage
 onready var blur = $Blur
 onready var hbox_inhale = $HBox_Inhale
@@ -7,6 +9,7 @@ onready var button_exhale = $Button_Exhale
 onready var button_done = $Button_Done
 onready var sound_inhale = $Inhale
 onready var sound_exhale = $Exhale
+onready var sound_drone = $Ambience
 
 var hallucinate_actual = 0.0
 var hallucinate_target = 0.0
@@ -54,4 +57,8 @@ func _exhale():
 	sound_exhale.play()
 
 func _backToMenu():
-	get_tree().change_scene("res://scenes/Overworld.tscn")
+	sound_exhale.stop()
+	sound_drone.stop()
+	var transition = obj_transition.instance()
+	transition.destination = "res://scenes/Overworld.tscn"
+	add_child(transition)
