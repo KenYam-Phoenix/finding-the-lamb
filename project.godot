@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="Finding the Lamb"
 run/main_scene="res://scenes/TitleScreen.tscn"
+boot_splash/image="res://misc/loading.png"
 config/icon="res://icon.png"
 
 [autoload]
