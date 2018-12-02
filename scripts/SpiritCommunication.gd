@@ -15,7 +15,8 @@ var hallucinate_actual = 0.0
 var hallucinate_target = 0.0
 
 func _ready():
-	pass # Replace with function body.
+	if Tutorials.tutorial_already_shown("spirits"):
+		_tutorial_done()
 
 func _process(delta):
 	hallucinate_actual = lerp(hallucinate_actual, hallucinate_target, delta/3.0)
