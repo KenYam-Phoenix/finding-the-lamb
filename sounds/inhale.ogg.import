@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/inhale.ogg-f73b77dea7066e2f01c5e324885e99d5.oggstr"
+
+[deps]
+
+source_file="res://sounds/inhale.ogg"
+dest_files=[ "res://.import/inhale.ogg-f73b77dea7066e2f01c5e324885e99d5.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

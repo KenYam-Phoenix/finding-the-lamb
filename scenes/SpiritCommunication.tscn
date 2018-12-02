@@ -1,0 +1,233 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scripts/SpiritCommunication.gd" type="Script" id=1]
+[ext_resource path="res://graphics/statue.jpg" type="Texture" id=2]
+[ext_resource path="res://objects/SpiritMessage.tscn" type="PackedScene" id=3]
+[ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=4]
+[ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=5]
+[ext_resource path="res://sounds/choir.ogg" type="AudioStream" id=6]
+[ext_resource path="res://sounds/inhale.ogg" type="AudioStream" id=7]
+[ext_resource path="res://sounds/exhale.ogg" type="AudioStream" id=8]
+
+[sub_resource type="Shader" id=1]
+
+code = "shader_type canvas_item;
+
+uniform float amount = 0.0f;
+uniform vec3 tint = vec3(1.0, 0.5, 0.5);
+
+void fragment() {
+	vec2 distort = vec2((cos(TIME + (UV.x * 50.0)) * 0.01 * amount) - (sin(TIME + (UV.x * 50.0)) * 0.01 * amount), (cos(TIME + (UV.y * 20.0)) * 0.01 * amount) - (sin(TIME + (UV.y * 50.0)) * 0.01 * amount));
+	vec3 image = textureLod(SCREEN_TEXTURE, SCREEN_UV + distort, amount).rgb;
+	vec3 second = textureLod(SCREEN_TEXTURE, SCREEN_UV + (distort/2.0), amount * 2.0).rgb;
+	vec3 bloom = textureLod(SCREEN_TEXTURE, SCREEN_UV + distort, 5.0).rgb;
+	COLOR.rgb = ((image + second) / 2.0) + (bloom * amount);
+	COLOR.rgb *= mix(vec3(1.0, 1.0, 1.0), tint, amount);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+
+render_priority = 0
+shader = SubResource( 1 )
+shader_param/amount = 0.0
+shader_param/tint = Vector3( 1, 0.5, 0.5 )
+
+[node name="SpiritCommunication" type="Control"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 1 )
+
+[node name="statue" type="TextureRect" parent="."]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+stretch_mode = 0
+
+[node name="SpiritMessage" parent="." instance=ExtResource( 3 )]
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="Blur" type="ColorRect" parent="."]
+material = SubResource( 2 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+color = Color( 1, 1, 1, 1 )
+
+[node name="Label_Tutorial" parent="." instance=ExtResource( 4 )]
+visible = false
+text = "A cold chill washes over you as you come before the statue. No amount of familiarity can ease the sense of dread that permates this place, no matter how many nights you spend here in meditation.
+
+The statue looms down from above, silently asking what pitiful quest brings you before it. With trembling hands, you reach for the incences that you will need; that, once inhaled, will lift your mind beyond this mortal realm, and allow you to hear what those beyond will tell you.
+
+The rules are the same as ever; there are three of them. Two will lead you true, and one will deceive you. Once you have begun, there is no turning back; you must solve their riddle. Fail to discern who is lying, and your people will no longer be a source of amusement to them..."
+
+[node name="Button_Exhale" type="Button" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = 310.0
+margin_right = 64.0
+margin_bottom = 342.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Exhale"
+flat = true
+align = 1
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = true
+stream_paused = false
+mix_target = 0
+bus = "Master"
+
+[node name="Inhale" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+stream_paused = false
+mix_target = 0
+bus = "Master"
+
+[node name="Exhale" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+stream_paused = false
+mix_target = 0
+bus = "Master"
+
+[node name="HBox_Inhale" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -438.0
+margin_top = 300.0
+margin_right = 439.0
+margin_bottom = 346.0
+rect_min_size = Vector2( 850, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 50
+alignment = 0
+
+[node name="Button_Inhale_Red" type="Button" parent="HBox_Inhale"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 244.0
+margin_bottom = 46.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Inhale Red Herbs"
+flat = true
+align = 1
+
+[node name="Button_Inhale_Green" type="Button" parent="HBox_Inhale"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 294.0
+margin_right = 572.0
+margin_bottom = 46.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Inhale Green Herbs"
+flat = true
+align = 1
+
+[node name="Button_Inhale_Blue" type="Button" parent="HBox_Inhale"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 622.0
+margin_right = 877.0
+margin_bottom = 46.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Inhale Blue Herbs"
+flat = true
+align = 1
+
+[connection signal="pressed" from="Button_Exhale" to="." method="_exhale"]
+[connection signal="pressed" from="HBox_Inhale/Button_Inhale_Red" to="." method="_inhale_red"]
+[connection signal="pressed" from="HBox_Inhale/Button_Inhale_Green" to="." method="_inhale_green"]
+[connection signal="pressed" from="HBox_Inhale/Button_Inhale_Blue" to="." method="_inhale_blue"]
