@@ -43,6 +43,12 @@ func _ready():
 	audio_ambience.play()
 	anim_player.play("FadeIn")
 
+func _process(delta):
+	if Input.is_action_pressed("ui_accept"):
+		anim_player.playback_speed = 10
+	else:
+		anim_player.playback_speed = 1
+
 func setup_block():
 	var next_block
 	if stage == 1:
