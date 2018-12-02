@@ -11,6 +11,10 @@ var lamb
 var sages
 var fake_sage
 
+# The decisions the player makes
+var chosen_lamb
+var chosen_spirit
+
 func get_member_by_id(id):
 	return members[id]
 

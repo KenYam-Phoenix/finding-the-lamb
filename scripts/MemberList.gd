@@ -15,3 +15,6 @@ func _ready():
 			CultMember.get_generation(next_member), CultMember.get_profession(next_member),
 			CultMember.get_spouse_id(next_member), CultMember.get_children_ids(next_member)
 		)
+
+func _backToMenu():
+	get_tree().change_scene("res://scenes/Overworld.tscn")
