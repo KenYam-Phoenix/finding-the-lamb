@@ -6,6 +6,12 @@ onready var label_profession = $HBoxContainer/Label_Profession
 onready var label_maritalstatus = $HBoxContainer/Label_MaritalStatus
 onready var label_children = $HBoxContainer/Label_Children
 
+func setup_header():
+	label_name.text = "Name"
+	label_parents.text = "Parents"
+	label_profession.text = "Profession"
+	label_maritalstatus.text = "Marital status"
+
 func setup(male, _name, mother_id, father_id, generation, profession, spouse_id, children_ids):
 	label_name.text = _name
 	# Set parent label

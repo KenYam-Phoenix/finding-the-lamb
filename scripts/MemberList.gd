@@ -7,6 +7,11 @@ onready var audio_bookopen = $Audio_BookOpen
 
 func _ready():
 	audio_bookopen.play()
+	# Make header row
+	var header = obj_memberoverview.instance()
+	vbox_members.add_child(header)
+	header.setup_header()
+	# Fill out member rows
 	var members = Cultmaster.members.values()
 	for next_member in members:
 		var member_overview = obj_memberoverview.instance()
