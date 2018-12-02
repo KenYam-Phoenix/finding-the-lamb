@@ -4,7 +4,7 @@ onready var anim_player = $AnimationPlayer
 onready var label_paragraph1 = $Center/VBox/Label_Paragraph1
 onready var label_paragraph2 = $Center/VBox/Label_Paragraph2
 onready var label_paragraph3 = $Center/VBox/Label_Paragraph3
-onready var audio_ambience = $Audio_Ambience
+onready var music = $Music
 
 var stage = 0
 
@@ -20,7 +20,7 @@ const INTRO_B = [
 ]
 
 func _ready():
-	audio_ambience.play()
+	music.play()
 	anim_player.play("FadeIn")
 
 func _process(delta):

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/FinalSelection.gd" type="Script" id=1]
 [ext_resource path="res://graphics/pool2.jpg" type="Texture" id=2]
 [ext_resource path="res://fonts/Tutorial.tres" type="DynamicFont" id=3]
 [ext_resource path="res://objects/Tutorial.tscn" type="PackedScene" id=4]
 [ext_resource path="res://objects/FadeIn.tscn" type="PackedScene" id=5]
+[ext_resource path="res://music/track2.ogg" type="AudioStream" id=6]
 
 [node name="FinalSelection" type="Control"]
 anchor_left = 0.0
@@ -205,6 +206,16 @@ More pressing than that is the demand of the spirits. Fail to win their game, an
 It is time to make your decision."
 
 [node name="FadeIn" parent="." instance=ExtResource( 5 )]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 6 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+stream_paused = false
+mix_target = 0
+bus = "Master"
 
 [connection signal="pressed" from="Button_Confirm" to="." method="_confirm"]
 [connection signal="tutorial_done" from="Tutorial" to="." method="_tutorial_done"]

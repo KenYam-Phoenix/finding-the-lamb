@@ -6,6 +6,7 @@ onready var vbox = $VBox
 onready var menu_lamb = $VBox/Menu_Lamb
 onready var menu_spirit = $VBox/Menu_Spirit
 onready var button_confirm = $Button_Confirm
+onready var music = $Music
 
 var names = []
 
@@ -14,6 +15,7 @@ var which_lamb = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	music.play()
 	menu_spirit.get_popup().add_item("The Red Spirit")
 	menu_spirit.get_popup().add_item("The Green Spirit")
 	menu_spirit.get_popup().add_item("The Blue Spirit")
@@ -37,6 +39,7 @@ func spirit_selected(id):
 		button_confirm.disabled = false
 
 func _confirm():
+	music.stop()
 	Cultmaster.chosen_lamb = which_lamb
 	Cultmaster.chosen_spirit = which_spirit
 	var transition = obj_transition.instance()
